@@ -9,16 +9,41 @@ import { BadRequest } from 'src/services/BadRequestResponse';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { ResetPasswordDto, UpdatePasswordDto } from './dto/reset-pasword.dto';
+import { CodeService } from 'src/code/code.service';
 
 @Injectable()
 export class AuthenticationService {
   constructor(
     @InjectModel(User.name)
     private readonly userModel: Model<User>,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private readonly codeService: CodeService
   ) {}
-  create(createAuthenticationDto: CreateAuthenticationDto) {
-    return 'This action adds a new authentication';
+
+  async create(createAuthenticationDto: CreateAuthenticationDto) {
+    try {
+      const existingUser = await this.userModel.findOne({
+        email: createAuthenticationDto.email,
+      });
+      if (existingUser) {
+        return BadRequest('User has an account with this email');
+      }
+      const saltrounds: number = 10;
+      const hashedPassword: string = await bcrypt.hash(
+        createAuthenticationDto.password,
+        saltrounds,
+      );
+      const newUser = new this.userModel({
+        email: createAuthenticationDto.email,
+        accountType: createAuthenticationDto.accountType,
+        password: hashedPassword,
+      });
+      const createdUser = await newUser.save();
+      await this.codeService.createCodeForEmail(createdUser.email, createdUser)
+      return createdUser
+    } catch (error) {
+      throw error.message;
+    }
   }
 
   async login(loginUserDto: LoginUserDto) {
@@ -39,24 +64,45 @@ export class AuthenticationService {
       if (!isPasswordValid) {
         throw BadRequest('Wrong Password');
       }
+      if (existingUser.status !== 'Verified') {
+        throw BadRequest('User has not verified email');
+      }
       return {
         user: existingUser,
         access_token: this.jwtService.sign({ user: existingUser }),
       };
     } catch (error) {
-      throw error.message
+      throw error.message;
     }
   }
 
+  async verifyUser(email: string) {
+    try {
+      const existingUser = await this.userModel.findOneAndUpdate(
+        { email: email },
+        { status: 'Verified' },
+        { new: true },
+      );
+      const access_token = await this.jwtService.signAsync({
+        user: existingUser,
+      });
+      return {
+        user: existingUser,
+        access_token: access_token,
+      };
+    } catch (error) {
+      throw error.message;
+    }
+  }
   update(id: number, updateAuthenticationDto: UpdateAuthenticationDto) {
     return `This action updates a #${id} authentication`;
   }
 
   remove(id: string) {
     try {
-      return this.userModel.findByIdAndDelete(id)
+      return this.userModel.findByIdAndDelete(id);
     } catch (error) {
-      throw error.message
+      throw error.message;
     }
   }
 

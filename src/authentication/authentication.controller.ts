@@ -20,7 +20,11 @@ export class AuthenticationController {
 
   @Post('user')
   create(@Body() createAuthenticationDto: CreateAuthenticationDto) {
-    return this.authenticationService.create(createAuthenticationDto);
+    try {
+      return this.authenticationService.create(createAuthenticationDto);
+    } catch (error) {
+      throw error.message
+    }
   }
 
   @Post('login')
@@ -82,6 +86,15 @@ export class AuthenticationController {
       const userId = decodedUser.user._id
       const existingUser = await this.userService.findOne(userId);
       return this.authenticationService.updateEmail(email, existingUser)
+    } catch (error) {
+      throw error.message
+    }
+  }
+
+  @Put('verify-user')
+  async verifyUser(@Body('email') email: string) {
+    try {
+      return this.authenticationService.verifyUser(email)
     } catch (error) {
       throw error.message
     }

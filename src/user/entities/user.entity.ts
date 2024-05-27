@@ -9,6 +9,11 @@ export enum ACCOUNTTYPE {
     ESTATECOMPANY = "Estate Company",
 }
 
+export enum STATUS {
+    VERIFIED = 'Verified',
+    NOTVERIFIED = 'Not Verified'
+}
+
 @Schema({ timestamps: true })
 export class User {
   @Prop({ type: mongoose.Schema.Types.ObjectId, auto: true })
@@ -19,6 +24,9 @@ export class User {
 
   @Prop({ type: String, enum: ACCOUNTTYPE, required: true})
   accountType: ACCOUNTTYPE;
+
+  @Prop({type: String, enum: STATUS, default: STATUS.NOTVERIFIED})
+  status: STATUS
 
   @Prop({ required: true })
   password: string;

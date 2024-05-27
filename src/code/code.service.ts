@@ -9,6 +9,7 @@ import { NotificationService } from 'src/services/NotificationService';
 import { BadRequest } from 'src/services/BadRequestResponse';
 import { randomNumber } from 'src/services/randomNumber';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { EmailPayloadDto } from './dto/email-payload.dto';
 
 @Injectable()
 export class CodeService {
@@ -52,12 +53,10 @@ export class CodeService {
         user: existingUser._id,
         code: code
       })
-      const emailPayload = {
+      const emailPayload: EmailPayloadDto = {
         to: email,
-        subject: 'Slang Reset Password',
-        from: 'christianonuora1@gmail.com',
-        text: 'Hello World from Slang.com',
-        html: `<h1>Hello your verification code is ${code}</h1>`,
+        subject: 'PropertyProspect Reset Password',
+        htmlContent: `<h1>Hello your verification code is ${code}</h1>`,
       };
       await this.notificationService.emailNotificationService(emailPayload)
       return await createdCode.save()
@@ -80,10 +79,8 @@ export class CodeService {
       })
       const emailPayload = {
         to: email,
-        subject: 'Slang Reset Password',
-        from: 'christianonuora1@gmail.com',
-        text: 'Slang.com',
-        html: `<h1>Hello your verification code is ${code}</h1>`,
+        subject: 'PropertyProspect Reset Password',
+        htmlContent: `<h1>Hello your verification code is ${code}</h1>`,
       };
       console.log(emailPayload)
       const sentEmail = await this.notificationService.emailNotificationService(emailPayload)

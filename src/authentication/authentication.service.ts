@@ -40,7 +40,13 @@ export class AuthenticationService {
       });
       const createdUser = await newUser.save();
       await this.codeService.createCodeForEmail(createdUser.email, createdUser)
-      return createdUser
+      const access_token = await this.jwtService.signAsync({
+        user: createdUser,
+      });
+      return {
+        user: existingUser,
+        access_token: access_token,
+      };
     } catch (error) {
       throw error.message;
     }
@@ -78,18 +84,11 @@ export class AuthenticationService {
 
   async verifyUser(email: string) {
     try {
-      const existingUser = await this.userModel.findOneAndUpdate(
+      return await this.userModel.findOneAndUpdate(
         { email: email },
         { status: 'Verified' },
         { new: true },
       );
-      const access_token = await this.jwtService.signAsync({
-        user: existingUser,
-      });
-      return {
-        user: existingUser,
-        access_token: access_token,
-      };
     } catch (error) {
       throw error.message;
     }

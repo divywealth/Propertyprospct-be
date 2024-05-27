@@ -7,6 +7,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { Code, CodeSchema } from './entities/code.entity';
 import { User, UserSchema } from 'src/user/entities/user.entity';
 import { NotificationService } from 'src/services/NotificationService';
+import { UserService } from 'src/user/user.service';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -21,9 +23,10 @@ import { NotificationService } from 'src/services/NotificationService';
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.JWT_EXPIRES_IN}
-    })
+    }),
+    ScheduleModule.forRoot(),
   ],
   controllers: [CodeController],
-  providers: [CodeService, NotificationService]
+  providers: [CodeService, NotificationService, UserService]
 })
 export class CodeModule {}

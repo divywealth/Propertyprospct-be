@@ -8,6 +8,7 @@ import { User } from 'src/user/entities/user.entity';
 import { NotificationService } from 'src/services/NotificationService';
 import { BadRequest } from 'src/services/BadRequestResponse';
 import { randomNumber } from 'src/services/randomNumber';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class CodeService {
@@ -29,7 +30,8 @@ export class CodeService {
       if(!existingCode) {
         throw BadRequest('invalid code')
       }
-      return 'Code correct'
+      const deleted = await this.codeModel.deleteOne({_id: existingCode._id})
+      return deleted
     } catch (error) {
       throw error.message
     }
@@ -90,6 +92,17 @@ export class CodeService {
 
     } catch (error) {
       throw error.message
+    }
+  }
+
+  @Cron(CronExpression.EVERY_MINUTE)
+  async handleCron() {
+    const expiredCodes = await this.codeModel.find({
+      createdAt: { $lt: new Date(Date.now() - 10 * 60 * 1000) },
+    }).exec();
+
+    if (expiredCodes.length > 0) {
+      await this.codeModel.deleteMany({ _id: { $in: expiredCodes.map(code => code._id) } }).exec();
     }
   }
   // create(createCodeDto: CreateCodeDto) {

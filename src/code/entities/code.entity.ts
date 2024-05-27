@@ -14,6 +14,9 @@ export class Code {
 
   @Prop({ required: true })
   code: string;
+
+  @Prop({ type: Date, expires: 600 }) // TTL index to expire documents after 600 seconds (10 minutes)
+  createdAt: Date;
 }
 
 export const CodeSchema = SchemaFactory.createForClass(Code)

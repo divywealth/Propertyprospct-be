@@ -9,11 +9,12 @@ import { CodeModule } from './code/code.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env/.env.${process.env.NODE_ENV}`
+      envFilePath: `.env/.env.${process.env.NODE_ENV}`,
     }),
     MongooseModule.forRoot(process.env.DB_URI),
-    AuthenticationModule, 
-    UserModule, CodeModule
+    AuthenticationModule,
+    UserModule,
+    CodeModule,
   ],
   controllers: [],
   providers: [],

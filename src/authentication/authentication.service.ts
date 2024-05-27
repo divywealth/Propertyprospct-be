@@ -17,7 +17,7 @@ export class AuthenticationService {
     @InjectModel(User.name)
     private readonly userModel: Model<User>,
     private jwtService: JwtService,
-    private readonly codeService: CodeService
+    private readonly codeService: CodeService,
   ) {}
 
   async create(createAuthenticationDto: CreateAuthenticationDto) {
@@ -39,12 +39,12 @@ export class AuthenticationService {
         password: hashedPassword,
       });
       const createdUser = await newUser.save();
-      await this.codeService.createCodeForEmail(createdUser.email, createdUser)
+      await this.codeService.createCodeForEmail(createdUser.email, createdUser);
       const access_token = await this.jwtService.signAsync({
         user: createdUser,
       });
       return {
-        user: existingUser,
+        user: createdUser,
         access_token: access_token,
       };
     } catch (error) {
@@ -82,13 +82,17 @@ export class AuthenticationService {
     }
   }
 
-  async verifyUser(email: string) {
+  async verifyUser(user: User) {
     try {
-      return await this.userModel.findOneAndUpdate(
-        { email: email },
-        { status: 'Verified' },
-        { new: true },
-      );
+      const existingUser = await this.userModel.findOne({ email: user.email });
+      if (existingUser.status === 'Not Verified') {
+        return await this.userModel.findOneAndUpdate(
+          { email: user.email },
+          { status: 'Verified' },
+          { new: true },
+        );
+      }
+      return BadRequest('User is verified already')
     } catch (error) {
       throw error.message;
     }

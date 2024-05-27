@@ -92,9 +92,15 @@ export class AuthenticationController {
   }
 
   @Put('verify-user')
-  async verifyUser(@Body('email') email: string) {
+  async verifyUser(@Req() request: Request) {
     try {
-      return this.authenticationService.verifyUser(email)
+      const token = request.headers.authorization.replace('Bearer ', '')
+      const decodedUser = await this.jwtService.verifyAsync(token, {
+        secret: process.env.JWT_SECRET
+      })
+      const userId = decodedUser.user._id
+      const existingUser = await this.userService.findOne(userId);
+      return this.authenticationService.verifyUser(existingUser)
     } catch (error) {
       throw error.message
     }

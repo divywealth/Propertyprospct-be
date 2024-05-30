@@ -16,7 +16,7 @@ export class CodeController {
     private readonly userService: UserService,
   ) {}
 
-  @Get('verify-code')
+  @Post('verify-code')
   async verifyCode(@Body('code') code: string, @Req() request: Request) {
     try {
       const token = request.headers.authorization.replace('Bearer ', '');

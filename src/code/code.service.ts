@@ -32,7 +32,10 @@ export class CodeService {
         throw BadRequest('invalid code')
       }
       const deleted = await this.codeModel.deleteOne({_id: existingCode._id})
-      return deleted
+      return {
+        existingCode,
+        message: 'Code is correct'
+      }
     } catch (error) {
       throw error.message
     }

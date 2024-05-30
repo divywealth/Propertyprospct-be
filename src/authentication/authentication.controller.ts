@@ -91,7 +91,7 @@ export class AuthenticationController {
     }
   }
 
-  @Patch('verify-user')
+  @Post('verify-user')
   async verifyUser(@Req() request: Request) {
     try {
       const token = request.headers.authorization.replace('Bearer ', '')

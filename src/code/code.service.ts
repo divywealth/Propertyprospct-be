@@ -23,7 +23,6 @@ export class CodeService {
   ) {}
 
   async verifyCode (code: string, user: User) {
-    try {
       const existingCode = await this.codeModel.findOne({
         user: user._id,
         code: code
@@ -36,9 +35,6 @@ export class CodeService {
         existingCode,
         message: 'Code is correct'
       }
-    } catch (error) {
-      throw error.message
-    }
   } 
 
   async createCodeForPassword(email: string) {

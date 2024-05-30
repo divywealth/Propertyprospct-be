@@ -18,6 +18,7 @@ export class CodeController {
 
   @Post('verify-code')
   async verifyCode(@Body('code') code: string, @Req() request: Request) {
+    try {
       const token = request.headers.authorization.replace('Bearer ', '');
       const decodedToken = await this.jwtService.verifyAsync(token, {
         secret: process.env.JWT_SECRET,
@@ -25,6 +26,9 @@ export class CodeController {
       const userToken = decodedToken.user._id;
       const user = await this.userService.findOne(userToken);
       return this.codeService.verifyCode(code, user);
+    } catch (error) {
+      throw error.message;
+    }
   }
 
   @Post('password-code')

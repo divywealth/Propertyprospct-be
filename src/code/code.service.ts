@@ -38,7 +38,6 @@ export class CodeService {
   } 
 
   async createCodeForPassword(email: string) {
-    try {
       const existingUser = await this.userModel.findOne({email: email})
       if (!existingUser) {
         throw BadRequest("email dosen't have an account")
@@ -59,13 +58,9 @@ export class CodeService {
       };
       await this.notificationService.emailNotificationService(emailPayload)
       return await createdCode.save()
-    } catch (error) {
-      throw error.message
-    }
   }
 
   async createCodeForEmail(email: string, user: User) {
-    try {
       console.log(email)
       const code = randomNumber(6);
       const existingUserCode =  await this.codeModel.findOne({user: user._id})
@@ -85,10 +80,6 @@ export class CodeService {
       const sentEmail = await this.notificationService.emailNotificationService(emailPayload)
       console.log(sentEmail)
       return await createdCode.save()
-
-    } catch (error) {
-      throw error.message
-    }
   }
 
   @Cron(CronExpression.EVERY_MINUTE)

@@ -21,7 +21,6 @@ export class AuthenticationService {
   ) {}
 
   async create(createAuthenticationDto: CreateAuthenticationDto) {
-    try {
       const existingUser = await this.userModel.findOne({
         email: createAuthenticationDto.email,
       });
@@ -47,13 +46,9 @@ export class AuthenticationService {
         user: createdUser,
         access_token: access_token,
       };
-    } catch (error) {
-      throw error.message;
-    }
   }
 
   async login(loginUserDto: LoginUserDto) {
-    try {
       if (!loginUserDto.email || !loginUserDto.password) {
         throw BadRequest('email and password required');
       }
@@ -77,13 +72,9 @@ export class AuthenticationService {
         user: existingUser,
         access_token: this.jwtService.sign({ user: existingUser }),
       };
-    } catch (error) {
-      throw error.message;
-    }
   }
 
   async verifyUser(user: User) {
-    try {
       const existingUser = await this.userModel.findOne({ email: user.email });
       if (existingUser.status === 'Not Verified') {
         return await this.userModel.findOneAndUpdate(
@@ -93,24 +84,16 @@ export class AuthenticationService {
         );
       }
       return BadRequest('User is verified already')
-    } catch (error) {
-      throw error.message;
-    }
   }
   update(id: number, updateAuthenticationDto: UpdateAuthenticationDto) {
     return `This action updates a #${id} authentication`;
   }
 
   remove(id: string) {
-    try {
       return this.userModel.findByIdAndDelete(id);
-    } catch (error) {
-      throw error.message;
-    }
   }
 
   async resetPassword(resetPasswordDto: ResetPasswordDto) {
-    try {
       if (!resetPasswordDto.password) {
         return BadRequest('Password is required');
       }
@@ -128,13 +111,9 @@ export class AuthenticationService {
         { email: resetPasswordDto.email },
         { password: password },
       );
-    } catch (error) {
-      throw error.message;
-    }
   }
 
   async updatePassword(updatePasswordDto: UpdatePasswordDto, user: User) {
-    try {
       if (!(await bcrypt.compare(updatePasswordDto.password, user.password))) {
         throw BadRequest('Wrong Password');
       }
@@ -148,13 +127,9 @@ export class AuthenticationService {
         { password: hashedPassword },
         { new: true },
       );
-    } catch (error) {
-      throw error.message;
-    }
   }
 
   async updateEmail(email: string, user: User) {
-    try {
       const updateEmail = await this.userModel.findByIdAndUpdate(
         user._id,
         { email: email },
@@ -164,8 +139,5 @@ export class AuthenticationService {
         return updateEmail;
       }
       throw BadRequest('email not updated');
-    } catch (error) {
-      throw error.message;
-    }
   }
 }

@@ -32,7 +32,7 @@ export class AuthenticationController {
   ) {}
 
   @Post('user')
-  @ApiOperation({ summary: "create new user"})
+  @ApiOperation({ summary: "Create new user"})
   @ApiBody({ type: CreateUserDto })
   @ApiResponse({ status: 201, description: 'User details with token.' })
   @UsePipes(ValidationPipe)
@@ -45,7 +45,7 @@ export class AuthenticationController {
   }
 
   @Post('login')
-  @ApiOperation({ summary: "create new user"})
+  @ApiOperation({ summary: "Login user"})
   @ApiBody({ type: LoginUserDto })
   @ApiResponse({ status: 201, description: 'User details with token.' })
   @UsePipes(ValidationPipe)
@@ -80,6 +80,7 @@ export class AuthenticationController {
   }
 
   @Delete('user/:id')
+  @ApiOperation({ summary: "Delete user"})
   remove(@Param('id') id: string) {
     try {
       return this.authenticationService.remove(id);
@@ -103,7 +104,7 @@ export class AuthenticationController {
 
   @Put('update-password')
   @UsePipes(ValidationPipe)
-  @ApiOperation({ summary: "update password"})
+  @ApiOperation({ summary: "Update password"})
   @ApiBody({ type: UpdatePasswordDto })
   @ApiHeader({
     name: 'Authorization',
@@ -132,7 +133,7 @@ export class AuthenticationController {
   }
 
   @Put('update-email')
-  @ApiOperation({ summary: "update email"})
+  @ApiOperation({ summary: "Update email"})
   @ApiHeader({
     name: 'Authorization',
     description: 'Access token',

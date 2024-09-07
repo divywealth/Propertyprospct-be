@@ -92,6 +92,7 @@ export class PropertyController {
 
   @Patch(':userId/property/:propertyId')
   @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: "Update property"})
   @ApiBody({ type: UpdatePropertyDto })
   @ApiHeader({
     name: 'Authorization',
@@ -113,6 +114,7 @@ export class PropertyController {
   }
 
   @Delete(':userId/properties/:propertyId')
+  @ApiOperation({ summary: "Delete property"})
   @ApiOperation({ summary: "Delete property"})
   @ApiHeader({
     name: 'Authorization',

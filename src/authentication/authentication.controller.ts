@@ -67,13 +67,8 @@ export class AuthenticationController {
     @Req() request: Request
   ) {
     try {
-      const token = request.headers.authorization.replace('Bearer ', '');
-      const decodedUser = await this.jwtService.verifyAsync(token, {
-        secret: process.env.JWT_SECRET,
-      });
-      const userId = decodedUser.user._id;
-      const existingUser = await this.userService.findOne(userId);
-      return this.authenticationService.update(existingUser._id, updateUserDto);
+      const user = request.user
+      return this.authenticationService.update(user._id, updateUserDto);
     } catch (error) {
       throw error
     }
@@ -117,15 +112,10 @@ export class AuthenticationController {
     @Req() request: Request,
   ) {
     try {
-      const token = request.headers.authorization.replace('Bearer ', '');
-      const decodedUser = await this.jwtService.verifyAsync(token, {
-        secret: process.env.JWT_SECRET,
-      });
-      const userId = decodedUser.user._id;
-      const existingUser = await this.userService.findOne(userId);
+      const user = request.user
       return this.authenticationService.updatePassword(
         updatePasswordDto,
-        existingUser,
+        user,
       );
     } catch (error) {
       throw error.message;
@@ -143,13 +133,8 @@ export class AuthenticationController {
   @ApiResponse({ status: 201, description: 'Updated User with email' })
   async updateEmail(@Req() request: Request, @Body('email') email: string) {
     try {
-      const token = request.headers.authorization.replace('Bearer ', '');
-      const decodedUser = await this.jwtService.verifyAsync(token, {
-        secret: process.env.JWT_SECRET,
-      });
-      const userId = decodedUser.user._id;
-      const existingUser = await this.userService.findOne(userId);
-      return this.authenticationService.updateEmail(email, existingUser);
+      const user = request.user
+      return this.authenticationService.updateEmail(email, user);
     } catch (error) {
       throw error.message;
     }
@@ -165,13 +150,8 @@ export class AuthenticationController {
   @ApiResponse({ status: 201, description: 'Updated User with verified' })
   async verifyUser(@Req() request: Request) {
     try {
-      const token = request.headers.authorization.replace('Bearer ', '');
-      const decodedUser = await this.jwtService.verifyAsync(token, {
-        secret: process.env.JWT_SECRET,
-      });
-      const userId = decodedUser.user._id;
-      const existingUser = await this.userService.findOne(userId);
-      return this.authenticationService.verifyUser(existingUser);
+      const user = request.user
+      return this.authenticationService.verifyUser(user);
     } catch (error) {
       throw error.message;
     }

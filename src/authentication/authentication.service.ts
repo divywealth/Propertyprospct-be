@@ -16,6 +16,7 @@ import { UserService } from 'src/user/user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { NOTFOUND404 } from 'src/Util/StatusResponse';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { log } from 'console';
 
 @Injectable()
 export class AuthenticationService {

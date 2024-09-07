@@ -21,7 +21,6 @@ export const jwtMiddleware = async (
     const jwtService = new JwtService({ secret: process.env.JWT_SECRET})
     const decodedToken = await jwtService.verifyAsync(token)
     req.user = decodedToken.user
-    console.log(req.user)
     next()
   } catch (error) {
     next(UnAuthorized401('Invalid token'));

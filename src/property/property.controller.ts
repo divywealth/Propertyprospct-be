@@ -113,6 +113,8 @@ export class PropertyController {
     return this.propertyService.update(+userId, updatePropertyDto);
   }
 
+  
+
   @Delete(':userId/properties/:propertyId')
   @ApiOperation({ summary: "Delete property"})
   @ApiOperation({ summary: "Delete property"})
@@ -137,4 +139,6 @@ export class PropertyController {
       throw error;
     }
   }
+
+
 }

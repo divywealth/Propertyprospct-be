@@ -37,7 +37,10 @@ export class AuthenticationModule {
     consumer
     .apply(jwtMiddleware)
     .forRoutes(
-      { path: "v1/:userId/properties/:propertyId", method: RequestMethod.DELETE },
+      { path: "v1/auth/verify-user", method: RequestMethod.PATCH },
+      { path: "v1/auth/update-email", method: RequestMethod.PUT},
+      { path: "v1/auth/update-password", method: RequestMethod.PUT},
+      { path: "v1/auth/update", method: RequestMethod.PATCH},
     )
   }
 }

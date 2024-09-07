@@ -139,6 +139,7 @@ export class AuthenticationController {
     description: 'Access token',
     required: true,
   })
+  @ApiBody({ schema: { type: 'object', properties: { email: { type: 'string', example: 'john12@gmail.com'}} } })
   @ApiResponse({ status: 201, description: 'Updated User with email' })
   async updateEmail(@Req() request: Request, @Body('email') email: string) {
     try {

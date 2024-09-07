@@ -16,7 +16,12 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 
   @ApiProperty({
     type: CreateUserAddressDto,
-    example: CreateUserAddressDto,
+    example: {
+      street: '123 Main St',
+      locality: 'Downtown',
+      state: 'Lagos',
+      country: 'Nigeria',
+    },
     description: 'Your address information',
     required: false,
   })

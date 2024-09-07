@@ -1,4 +1,4 @@
-import { ApiOperation, ApiHeader, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiHeader, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
 import { CodeService } from './code.service';
 import { CreateCodeDto } from './dto/create-code.dto';
@@ -17,13 +17,14 @@ export class CodeController {
     private readonly userService: UserService,
   ) {}
 
-  @Post('verify-code')
+  @Post('auth/verify-code')
   @ApiOperation({ summary: "verify code sent to email"})
   @ApiHeader({
     name: 'Authorization',
     description: 'Access token',
     required: true,
   })
+  @ApiBody({ schema: { type: 'object', properties: { code: { type: 'string', example: '435837'}} } })
   @ApiResponse({ status: 201, description: 'Existing code and successful message' })
   async verifyCode(@Body('code') code: string, @Req() request: Request) {
     try {
@@ -39,8 +40,9 @@ export class CodeController {
     }
   }
 
-  @Post('password-code')
+  @Post('auth/forget-password/send-code')
   @ApiOperation({ summary: "create code for forget password"})
+  @ApiBody({ schema: { type: 'object', properties: { email: { type: 'string', example: 'john12@gmail.com'}} } })
   @ApiResponse({ status: 201, description: 'Created code instance' })
   async forgetPasswordCode(@Body('email') email: string) {
     try {
@@ -50,13 +52,14 @@ export class CodeController {
     }
   }
 
-  @Post('email-code')
+  @Post('auth/register/sendcode')
   @ApiOperation({ summary: "create code for verifyUser"})
   @ApiHeader({
     name: 'Authorization',
     description: 'Access token',
     required: true,
   })
+  @ApiBody({ schema: { type: 'object', properties: { email: { type: 'string', example: 'john12@gmail.com'}} } })
   @ApiResponse({ status: 201, description: 'Created code instance' })
   async verifyUserCode(
     @Body('email') email: string,

@@ -31,7 +31,7 @@ export class AuthenticationController {
     private readonly userService: UserService,
   ) {}
 
-  @Post('user')
+  @Post('auth/register')
   @ApiOperation({ summary: "Create new user"})
   @ApiBody({ type: CreateUserDto })
   @ApiResponse({ status: 201, description: 'User details with token.' })
@@ -44,7 +44,7 @@ export class AuthenticationController {
     }
   }
 
-  @Post('login')
+  @Post('auth/signin')
   @ApiOperation({ summary: "Login user"})
   @ApiBody({ type: LoginUserDto })
   @ApiResponse({ status: 201, description: 'User details with token.' })
@@ -58,7 +58,7 @@ export class AuthenticationController {
     }
   }
 
-  @Patch('user/update')
+  @Patch('auth/update')
   @ApiOperation({ summary: "Update user"})
   @ApiBody({ type: UpdateUserDto })
   @ApiResponse({ status: 201, description: 'Updated User' })
@@ -79,7 +79,7 @@ export class AuthenticationController {
     }
   }
 
-  @Delete('user/:id')
+  @Delete('auth/delete/:id')
   @ApiOperation({ summary: "Delete user"})
   remove(@Param('id') id: string) {
     try {
@@ -89,7 +89,7 @@ export class AuthenticationController {
     }
   }
 
-  @Put('reset-password')
+  @Put('auth/reset-password')
   @UsePipes(ValidationPipe)
   @ApiOperation({ summary: "reset password"})
   @ApiBody({ type: ResetPasswordDto })
@@ -102,7 +102,7 @@ export class AuthenticationController {
     }
   }
 
-  @Put('update-password')
+  @Put('auth/update-password')
   @UsePipes(ValidationPipe)
   @ApiOperation({ summary: "Update password"})
   @ApiBody({ type: UpdatePasswordDto })
@@ -132,7 +132,7 @@ export class AuthenticationController {
     }
   }
 
-  @Put('update-email')
+  @Put('auth/update-email')
   @ApiOperation({ summary: "Update email"})
   @ApiHeader({
     name: 'Authorization',
@@ -155,7 +155,7 @@ export class AuthenticationController {
     }
   }
 
-  @Patch('verify-user')
+  @Patch('auth/verify-user')
   @ApiOperation({ summary: "Verify user"})
   @ApiHeader({
     name: 'Authorization',

@@ -1,5 +1,5 @@
 import { UserAddress, UserAdrressSchema } from './../user-address/entities/user-address.entity';
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { AuthenticationController } from './authentication.controller';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -11,6 +11,7 @@ import { CodeService } from 'src/code/code.service';
 import { Code, CodeSchema } from 'src/code/entities/code.entity';
 import { NotificationService } from 'src/services/NotificationService';
 import { UserAddressService } from 'src/user-address/user-address.service';
+import { jwtMiddleware } from 'src/Util/jwt.middleware';
 
 @Module({
   imports: [
@@ -31,4 +32,12 @@ import { UserAddressService } from 'src/user-address/user-address.service';
   controllers: [AuthenticationController],
   providers: [AuthenticationService, UserService, CodeService, NotificationService, UserAddressService],
 })
-export class AuthenticationModule {}
+export class AuthenticationModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+    .apply(jwtMiddleware)
+    .forRoutes(
+      { path: "v1/:userId/properties/:propertyId", method: RequestMethod.DELETE },
+    )
+  }
+}

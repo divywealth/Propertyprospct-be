@@ -12,7 +12,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   whatsappNo: string;
 
   @ApiProperty({
-    type: UpdateUserAddressDto,
+    type: CreateUserAddressDto,
     description: 'Your address information',
     required: false,
   })

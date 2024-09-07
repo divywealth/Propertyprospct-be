@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { VersioningType } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const httpsOptions = {};
@@ -17,7 +18,18 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI
   })
-  console.log()
+  const config = new DocumentBuilder()
+  .setTitle('Your API Name')          // Title of the API documentation
+  .setDescription('API description')  // Description of your API
+  .setVersion('1.0')                  // API version
+  .addBearerAuth()                    // To support JWT bearer token
+  .build();
+
+// Create Swagger document
+const document = SwaggerModule.createDocument(app, config);
+
+// Setup Swagger module
+SwaggerModule.setup('api-docs', app, document);
   await app.listen(3000);
 }
 bootstrap();

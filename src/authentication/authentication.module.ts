@@ -1,3 +1,4 @@
+import { UserAddress, UserAdrressSchema } from './../user-address/entities/user-address.entity';
 import { Module } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { AuthenticationController } from './authentication.controller';
@@ -9,12 +10,14 @@ import { UserService } from 'src/user/user.service';
 import { CodeService } from 'src/code/code.service';
 import { Code, CodeSchema } from 'src/code/entities/code.entity';
 import { NotificationService } from 'src/services/NotificationService';
+import { UserAddressService } from 'src/user-address/user-address.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Code.name, schema: CodeSchema },
+      { name: UserAddress.name, schema: UserAdrressSchema}
     ]),
     ConfigModule.forRoot({
       isGlobal: true,
@@ -26,6 +29,6 @@ import { NotificationService } from 'src/services/NotificationService';
     }),
   ],
   controllers: [AuthenticationController],
-  providers: [AuthenticationService, UserService, CodeService, NotificationService],
+  providers: [AuthenticationService, UserService, CodeService, NotificationService, UserAddressService],
 })
 export class AuthenticationModule {}

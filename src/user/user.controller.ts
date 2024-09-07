@@ -1,18 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { Request } from 'express';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller({
   version: '1'
 })
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private jwtService: JwtService
+    ) {}
 
   @Get('users')
   findAll() {
     try {
-      return this.userService.findAll();
+      return this.userService.findAll()
     } catch (error) {
       throw error.message
     }
@@ -24,6 +27,18 @@ export class UserController {
       return this.userService.findOne(id);
     } catch (error) {
       throw error.message
+    }
+  }
+
+  @Patch('api/user/update') 
+  async updateUser(@Req() request: Request) {
+    try {
+      const token = request.headers.authorization.replace('Bearer ', '');
+      const decodedToken = await this.jwtService.verifyAsync(token, {
+        secret: process.env.JWT_SECRET,
+      });
+    } catch (error) {
+      throw error
     }
   }
 }

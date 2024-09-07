@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './entities/user.entity';
 import { Model } from 'mongoose';
+import { Request400 } from 'src/Util/StatusResponse';
 
 @Injectable()
 export class UserService {
@@ -12,19 +11,33 @@ export class UserService {
     private readonly userModel: Model<User>,
   ) {}
 
-  async findAll() {
+  async findAll(): Promise<User[]> {
     try {
-      return this.userModel.find();
+      return this.userModel
+        .find()
+        .select('-password')
+        .populate('address')
+        .exec();
     } catch (error) {
       throw error.message;
     }
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<User> {
     try {
-      return await this.userModel.findById(id)
+      const existingUser: User = await this.userModel
+        .findById(id)
+        .populate('address')
+        .select('-password')
+        .exec();
+      if (!existingUser) {
+        return Request400("user dosen't exist");
+      }
+      return existingUser;
     } catch (error) {
       throw error.message;
     }
   }
+
+  async updateUser() {}
 }

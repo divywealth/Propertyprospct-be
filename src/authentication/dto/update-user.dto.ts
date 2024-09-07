@@ -8,11 +8,15 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @ApiProperty({ example: '+234902998928', description: 'User Phone number' })
   phoneNo: string;
 
-  @ApiProperty({ example: '+234902998928', description: 'User WhatsApp number'})
+  @ApiProperty({
+    example: '+234902998928',
+    description: 'User WhatsApp number',
+  })
   whatsappNo: string;
 
   @ApiProperty({
     type: CreateUserAddressDto,
+    example: CreateUserAddressDto,
     description: 'Your address information',
     required: false,
   })

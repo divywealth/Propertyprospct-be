@@ -35,28 +35,28 @@ export class CreatePropertyDto {
   @ApiProperty({ description: 'currency if naira or dollar', required: true})
   paymentType: PaymentType;
 
-  @ApiProperty({ description: 'total number of bedrooms', })
+  @ApiProperty({ description: 'total number of bedrooms', required: false,})
   noOfBedrooms: number;
 
-  @ApiProperty({ description: 'total number of toilets', })
+  @ApiProperty({ description: 'total number of toilets', required: false,})
   toilets: number;
 
-  @ApiProperty({ description: 'total number of parking space', })
+  @ApiProperty({ description: 'total number of parking space', required: false,})
   parking: number;
 
-  @ApiProperty({ description: 'total area for lands', })
+  @ApiProperty({ description: 'total area for lands', required: false,})
   totalArea: number;
 
-  @ApiProperty({ description: 'covered area for land', })
+  @ApiProperty({ description: 'covered area for land', required: false,})
   coveredArea: number;
 
-  @ApiProperty({ description: 'if furnished', })
+  @ApiProperty({ description: 'if furnished', required: false,})
   isFurnished: boolean;
 
-  @ApiProperty({ description: 'if serviced', })
+  @ApiProperty({ description: 'if serviced', required: false,})
   isServiced: boolean;
 
-  @ApiProperty({ description: 'if shared toilets or bathroom', })
+  @ApiProperty({ description: 'if shared toilets or bathroom', required: false,})
   isShared: boolean;
 
   @IsNotEmpty()

@@ -1,3 +1,4 @@
+import { CreateUserAddressDto } from 'src/user-address/dto/create-user-address.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { UpdateUserAddressDto } from './../../user-address/dto/update-user-address.dto';
 import { PartialType } from '@nestjs/mapped-types';
@@ -15,5 +16,5 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     description: 'Your address information',
     required: false,
   })
-  address: UpdateUserAddressDto;
+  address: CreateUserAddressDto;
 }

@@ -16,15 +16,15 @@ export class CreatePropertyDto {
   title: string;
 
   @IsNotEmpty()
-  @ApiProperty({ description: 'category', required: true, enum: Category})
+  @ApiProperty({ description: 'category', required: true, enum: Category, example: "For Rent"})
   category: Category;
 
   @IsNotEmpty()
-  @ApiProperty({ description: 'type of property', required: true, enum: Type})
+  @ApiProperty({ description: 'type of property', required: true, enum: Type, example: "Flat/Apartment"})
   type: Type;
 
   @IsNotEmpty()
-  @ApiProperty({ description: 'market status', required: true, enum: Status})
+  @ApiProperty({ description: 'market status', required: true, enum: Status, example: "Available"})
   marketStatus: Status;
 
   @IsNotEmpty()
@@ -36,7 +36,7 @@ export class CreatePropertyDto {
   maxPrice: string;
 
   @IsNotEmpty()
-  @ApiProperty({ description: 'currency if naira or dollar', required: true})
+  @ApiProperty({ description: 'currency if naira or dollar', required: true, example: "Per month"})
   paymentType: PaymentType;
 
   @ApiProperty({ description: 'total number of bedrooms', required: false,})
@@ -51,19 +51,19 @@ export class CreatePropertyDto {
   @ApiProperty({ description: 'total number of parking space', required: false,})
   parking: number;
 
-  @ApiProperty({ description: 'total area for lands', required: false,})
+  @ApiProperty({ description: 'total area for lands', required: false, example: 2})
   totalArea: number;
 
-  @ApiProperty({ description: 'covered area for land', required: false,})
+  @ApiProperty({ description: 'covered area for land', required: false, example: 3})
   coveredArea: number;
 
-  @ApiProperty({ description: 'if furnished', required: false,})
+  @ApiProperty({ description: 'if furnished', required: false, example: true})
   isFurnished: boolean;
 
-  @ApiProperty({ description: 'if serviced', required: false,})
+  @ApiProperty({ description: 'if serviced', required: false, example: true})
   isServiced: boolean;
 
-  @ApiProperty({ description: 'if shared toilets or bathroom', required: false,})
+  @ApiProperty({ description: 'if shared toilets or bathroom', required: false, example: true})
   isShared: boolean;
 
   @IsNotEmpty()

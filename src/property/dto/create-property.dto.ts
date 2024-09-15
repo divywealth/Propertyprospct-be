@@ -36,7 +36,7 @@ export class CreatePropertyDto {
   maxPrice: string;
 
   @IsNotEmpty()
-  @ApiProperty({ description: 'currency if naira or dollar', required: true, example: "Per month"})
+  @ApiProperty({ description: 'Per month or Per annum', required: true, enum: PaymentType, example: "Per month"})
   paymentType: PaymentType;
 
   @ApiProperty({ description: 'total number of bedrooms', required: false,})

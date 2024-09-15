@@ -25,7 +25,10 @@ export class Property {
   marketStatus: Status;
 
   @Prop({ required: true })
-  price: string;
+  minPrice: string;
+
+  @Prop({ required: true })
+  maxPrice: string;
 
   @Prop({ typr: String, enum: PaymentType, required: true})
   paymentType: PaymentType;
@@ -34,7 +37,10 @@ export class Property {
   noOfBedrooms: number;
 
   @Prop({ default: null })
-  toilets: number;
+  noOfBathrooms: number;
+
+  @Prop({ default: null })
+  noOfToilets: number;
 
   @Prop({ default: null })
   parking: number;

@@ -28,8 +28,12 @@ export class CreatePropertyDto {
   marketStatus: Status;
 
   @IsNotEmpty()
-  @ApiProperty({ description: 'price', required: true})
-  price: string;
+  @ApiProperty({ description: 'minimum price', required: true})
+  minPrice: string;
+
+  @IsNotEmpty()
+  @ApiProperty({ description: 'maximum price', required: true})
+  maxPrice: string;
 
   @IsNotEmpty()
   @ApiProperty({ description: 'currency if naira or dollar', required: true})
@@ -38,8 +42,11 @@ export class CreatePropertyDto {
   @ApiProperty({ description: 'total number of bedrooms', required: false,})
   noOfBedrooms: number;
 
+  @ApiProperty({ description: 'total number of bedrooms', required: false,})
+  noOfBathrooms: number;
+
   @ApiProperty({ description: 'total number of toilets', required: false,})
-  toilets: number;
+  noOfToilets: number;
 
   @ApiProperty({ description: 'total number of parking space', required: false,})
   parking: number;

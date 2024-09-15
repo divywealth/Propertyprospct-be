@@ -40,8 +40,9 @@ export class PropertyModule {
     .apply(jwtMiddleware)
     .forRoutes(
       { path: "v1/:userId/properties/:propertyId", method: RequestMethod.DELETE },
-      { path: "v1/:userId/properties/:propertyId", method: RequestMethod.PATCH },
+      { path: "v1/:userId/property/:propertyId", method: RequestMethod.PATCH },
       { path: "v1/create-property", method: RequestMethod.POST },
+      { path: "v1/:userId/properties", method: RequestMethod.GET },
     )
   }
 }

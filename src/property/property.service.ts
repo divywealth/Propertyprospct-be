@@ -78,8 +78,15 @@ export class PropertyService {
     return existingProperty;
   }
 
-  update(id: number, updatePropertyDto: UpdatePropertyDto) {
-    return `This action updates a #${id} property`;
+  updateUserProperty(propertyId: string, userId: string, updatePropertyDto: UpdatePropertyDto) {
+    
+    const deleteprp = this.PropertyModel.findOneAndUpdate({_id: propertyId, user: userId}, updatePropertyDto, { new: true })
+    return deleteprp;
+  }
+
+  getUserProperties(userId: string) {
+    const userProperties = this.PropertyModel.find({ user: userId })
+    return userProperties;
   }
 
   deleteUserProperty(userId: string, propertyId: string) {

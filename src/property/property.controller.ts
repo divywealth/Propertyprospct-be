@@ -107,13 +107,31 @@ export class PropertyController {
     @Body() updatePropertyDto: UpdatePropertyDto,
   ) {
     const user = request.user;
+    console.log(user)
     if (user._id !== userId) {
-      return UnAuthorized401("You are not allowed to delete property")
+      return UnAuthorized401("You are not allowed to update this property")
     }
-    return this.propertyService.update(+userId, updatePropertyDto);
+    return this.propertyService.updateUserProperty(propertyId, user._id, updatePropertyDto);
   }
 
-  
+  @Get(':userId/properties')
+  @ApiOperation({ summary: "Get User Properties"})
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Access token',
+    required: true,
+  })
+  getUserProperties (@Param('userId') userId: string, @Req() request: Request) {
+    try {
+      const user = request.user
+      if (user._id !== userId) {
+        return UnAuthorized401("Not allowed to get user properties")
+      }
+      return this.propertyService.getUserProperties(user._id)
+    } catch (error) {
+      throw error.message
+    }
+  }
 
   @Delete(':userId/properties/:propertyId')
   @ApiOperation({ summary: "Delete property"})
@@ -132,7 +150,7 @@ export class PropertyController {
     try {
       const user = request.user;
       if (user._id !== userId) {
-        return UnAuthorized401("You are not allowed to delete property")
+        return UnAuthorized401("You are not allowed to delete this property")
       }
       return this.propertyService.deleteUserProperty(userId, propertyId);
     } catch (error) {

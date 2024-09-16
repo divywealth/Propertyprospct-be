@@ -12,6 +12,7 @@ import {
   ValidationPipe,
   UseInterceptors,
   UploadedFiles,
+  Query,
 } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { CreatePropertyDto } from './dto/create-property.dto';
@@ -26,6 +27,7 @@ import {
 } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiHeader, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UnAuthorized401 } from 'src/Util/StatusResponse';
+import { PropertySearchDto } from './dto/property-search.dto';
 
 @Controller({
   version: '1',
@@ -135,7 +137,6 @@ export class PropertyController {
 
   @Delete(':userId/properties/:propertyId')
   @ApiOperation({ summary: "Delete property"})
-  @ApiOperation({ summary: "Delete property"})
   @ApiHeader({
     name: 'Authorization',
     description: 'Access token',
@@ -158,5 +159,12 @@ export class PropertyController {
     }
   }
 
+  @Get('properties/search')
+  @ApiOperation({summary: "Search property"})
+  @ApiBody({ type: PropertySearchDto})
+  @UsePipes(ValidationPipe)
+  searchProperty(@Query() searchDto: PropertySearchDto) {
+    return this.propertyService.searchProperties(searchDto)
+  }
 
 }

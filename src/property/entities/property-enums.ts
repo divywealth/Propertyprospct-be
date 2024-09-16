@@ -1,6 +1,6 @@
 export enum Category {
     RENT = 'For Rent',
-    SALE = ' For Sale',
+    SALE = 'For Sale',
     JOINTVENTURE = 'Joint Venture',
     SHORTLET = 'Short Let'
 }

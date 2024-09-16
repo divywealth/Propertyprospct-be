@@ -11,6 +11,9 @@ import { User } from 'src/user/entities/user.entity';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
 import { Property } from './entities/property.entity';
+import { PropertySearchDto } from './dto/property-search.dto';
+import { filter } from 'vue/types/umd';
+import { faAddressBook } from '@fortawesome/free-regular-svg-icons';
 
 @Injectable()
 export class PropertyService {
@@ -79,7 +82,7 @@ export class PropertyService {
   }
 
   updateUserProperty(propertyId: string, userId: string, updatePropertyDto: UpdatePropertyDto) {
-    
+
     const deleteprp = this.PropertyModel.findOneAndUpdate({_id: propertyId, user: userId}, updatePropertyDto, { new: true })
     return deleteprp;
   }
@@ -95,5 +98,33 @@ export class PropertyService {
       return NOTFOUND404('Property not found')
     }
     return deleteProperty;
+  }
+
+  async searchProperties(searchDto: PropertySearchDto) {
+    const { category, type, maxPrice, locality, state} = searchDto
+    const filterBy: any = {};
+
+    if (category) filterBy.category = category
+    if(type) filterBy.type = type
+    if(maxPrice) filterBy.maxPrice = { $lte: maxPrice };
+
+    console.log(filterBy)
+    const query = this.PropertyModel.find(filterBy).populate('address images user')
+
+    if (locality) {
+      query.populate({
+        path: 'address',
+        match: { locality: { $regex: locality, $options: 'i'}}
+      })
+    }
+
+    if (state) {
+      query.populate({
+        path: 'address',
+        match: { state: { $regex: state, $options: 'i'}}
+      })
+    }
+    return query.exec()
+
   }
 }

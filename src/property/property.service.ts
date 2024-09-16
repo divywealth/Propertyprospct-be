@@ -102,8 +102,8 @@ export class PropertyService {
     const { category, type, maxPrice, locality, state} = searchDto
     const filterBy: any = {};
 
-    if (category) filterBy.category = category
-    if(type) filterBy.type = type
+    if (category) filterBy.category = { $regex: category, $options: 'i' }
+    if(type) filterBy.type = { $regex: type, $options: 'i' }
     if(maxPrice) filterBy.maxPrice = { $lte: maxPrice };
 
     console.log(filterBy)

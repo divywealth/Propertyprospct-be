@@ -5,14 +5,12 @@ import { Category, Type } from "../entities/property-enums";
 
 export class PropertySearchDto {
     @IsOptional()
-    @IsEnum(Category)
-    @ApiProperty({ description: 'category for property', required: false, enum: Category})
-    category?: Category;
+    @ApiProperty({ description: 'category for property', required: false})
+    category?: string;
 
     @IsOptional()
-    @IsEnum(Type)
-    @ApiProperty({ description: 'type for property', required: false, enum: Type})
-    type?: Type;
+    @ApiProperty({ description: 'type for property', required: false})
+    type?: string;
 
     @IsOptional()
     @ApiProperty({ description: 'Maximum price of property', required: false })

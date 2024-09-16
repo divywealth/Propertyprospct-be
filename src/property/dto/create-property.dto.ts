@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsEnum } from 'class-validator';
 import { CreateUserAddressDto } from 'src/user-address/dto/create-user-address.dto';
 import {
   Category,
@@ -16,14 +16,17 @@ export class CreatePropertyDto {
   title: string;
 
   @IsNotEmpty()
+  @IsEnum(Category)
   @ApiProperty({ description: 'category', required: true, enum: Category, example: "For Rent"})
   category: Category;
 
   @IsNotEmpty()
+  @IsEnum(Type)
   @ApiProperty({ description: 'type of property', required: true, enum: Type, example: "Flat/Apartment"})
   type: Type;
 
   @IsNotEmpty()
+  @IsEnum(Status)
   @ApiProperty({ description: 'market status', required: true, enum: Status, example: "Available"})
   marketStatus: Status;
 

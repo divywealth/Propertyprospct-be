@@ -25,7 +25,7 @@ import {
   FileFieldsInterceptor,
   FilesInterceptor,
 } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiHeader, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiHeader, ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { UnAuthorized401 } from 'src/Util/StatusResponse';
 import { PropertySearchDto } from './dto/property-search.dto';
 
@@ -161,7 +161,7 @@ export class PropertyController {
 
   @Get('properties/search')
   @ApiOperation({summary: "Search property"})
-  @ApiBody({ type: PropertySearchDto})
+  @ApiQuery({ type: PropertySearchDto})
   @UsePipes(ValidationPipe)
   searchProperty(@Query() searchDto: PropertySearchDto) {
     return this.propertyService.searchProperties(searchDto)

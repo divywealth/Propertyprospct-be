@@ -12,8 +12,6 @@ import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
 import { Property } from './entities/property.entity';
 import { PropertySearchDto } from './dto/property-search.dto';
-import { filter } from 'vue/types/umd';
-import { faAddressBook } from '@fortawesome/free-regular-svg-icons';
 
 @Injectable()
 export class PropertyService {

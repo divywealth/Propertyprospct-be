@@ -34,6 +34,7 @@ export class CodeController {
       });
       const userToken = decodedToken.user._id;
       const user = await this.userService.findOne(userToken);
+      console.log(user)
       return this.codeService.verifyCode(code, user);
     } catch (error) {
       throw error.message;

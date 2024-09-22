@@ -73,9 +73,6 @@ export class AuthenticationService {
     if (!isPasswordValid) {
       throw BadRequest('Wrong Password');
     }
-    if (existingUser.status !== 'Verified') {
-      throw BadRequest('User has not verified email');
-    }
     return {
       user: existingUser,
       access_token: await this.jwtService.sign({ user: existingUser }),

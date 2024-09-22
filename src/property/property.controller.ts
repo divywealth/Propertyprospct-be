@@ -13,6 +13,7 @@ import {
   UseInterceptors,
   UploadedFiles,
   Query,
+  UploadedFile,
 } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { CreatePropertyDto } from './dto/create-property.dto';
@@ -23,6 +24,7 @@ import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
 import {
   FileFieldsInterceptor,
+  FileInterceptor,
   FilesInterceptor,
 } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiHeader, ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
@@ -38,11 +40,12 @@ export class PropertyController {
     private jwtService: JwtService,
     private userService: UserService,
   ) {}
+  @ApiConsumes('multipart/form-data')
+
 
   @Post('create-property')
-  @ApiConsumes('multipart/form-data')
   @ApiBody({ type: CreatePropertyDto })
-  @UseInterceptors(FilesInterceptor('files', 10))
+  @UseInterceptors(FilesInterceptor('files'))
   @ApiOperation({ summary: "Create property"})
   @ApiHeader({
     name: 'Authorization',
@@ -58,12 +61,11 @@ export class PropertyController {
   ) {
     try {
       const user = request.user
-      console.log(user)
+      console.log(createPropertyDto)
       const propertyDto: CreatePropertyDto = {
         ...createPropertyDto,
         files: files,
       };
-      console.log(propertyDto);
       return this.propertyService.create(propertyDto, user);
     } catch (error) {
       throw error.message;

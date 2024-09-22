@@ -9,7 +9,8 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       "http://localhost:5173",
-      "https://propertyprospecthq.netlify.app"
+      "https://propertyprospecthq.netlify.app",
+      "http://localhost:8080"
     ],
     methods: ['POST', 'PUT', 'DELETE', 'GET', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],

@@ -61,7 +61,6 @@ export class PropertyController {
   ) {
     try {
       const user = request.user
-      console.log(createPropertyDto)
       const propertyDto: CreatePropertyDto = {
         ...createPropertyDto,
         files: files,

@@ -64,6 +64,7 @@ export class PropertyService {
       .populate('user')
       .populate('address')
       .exec();
+    console.log(populatedProperty)
     return populatedProperty;
   }
 
@@ -99,14 +100,14 @@ export class PropertyService {
   }
 
   async searchProperties(searchDto: PropertySearchDto) {
-    const { category, type, maxPrice, locality, state} = searchDto
+    const { category, type, maxPrice, minPrice, locality, state} = searchDto
     const filterBy: any = {};
 
     if (category) filterBy.category = { $regex: category, $options: 'i' }
     if(type) filterBy.type = { $regex: type, $options: 'i' }
     if(maxPrice) filterBy.maxPrice = { $lte: maxPrice };
+    if(minPrice) filterBy.maxPrice = { $lte: minPrice };
 
-    console.log(filterBy)
     const query = this.PropertyModel.find(filterBy).populate('address images user')
 
     if (locality) {

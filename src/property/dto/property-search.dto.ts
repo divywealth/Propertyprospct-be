@@ -17,6 +17,10 @@ export class PropertySearchDto {
     maxPrice?: string;
 
     @IsOptional()
+    @ApiProperty({ description: 'Minimum price of property', required: false })
+    minPrice?: string;
+
+    @IsOptional()
     @ApiProperty({ description: 'Locality of property', required: false })
     locality?: string;
 

@@ -12,6 +12,7 @@ import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
 import { Property } from './entities/property.entity';
 import { PropertySearchDto } from './dto/property-search.dto';
+import { filter } from 'vue/types/umd';
 
 @Injectable()
 export class PropertyService {
@@ -105,8 +106,12 @@ export class PropertyService {
 
     if (category) filterBy.category = { $regex: category, $options: 'i' }
     if(type) filterBy.type = { $regex: type, $options: 'i' }
-    if(maxPrice) filterBy.maxPrice = { $lte: maxPrice };
-    if(minPrice) filterBy.maxPrice = { $lte: minPrice };
+    if(maxPrice) filterBy.maxPrice = { $gte: maxPrice };
+    if(minPrice) filterBy.minPrice = { $gte: minPrice };
+    if(minPrice && maxPrice) {
+      filterBy.minPrice = { $gte: minPrice, $lte: maxPrice }; 
+      filterBy.maxPrice = { $gte: minPrice, $lte: maxPrice }; 
+    }
 
     const query = this.PropertyModel.find(filterBy).populate('address images user')
 

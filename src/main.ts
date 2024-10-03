@@ -10,7 +10,8 @@ async function bootstrap() {
     origin: [
       "http://localhost:5173",
       "https://propertyprospecthq.netlify.app",
-      "http://localhost:8080"
+      "http://localhost:8080",
+      "https://property-prospect-hq.vercel.app"
     ],
     methods: ['POST', 'PUT', 'DELETE', 'GET', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],

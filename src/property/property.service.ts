@@ -88,7 +88,7 @@ export class PropertyService {
   }
 
   getUserProperties(userId: string) {
-    const userProperties = this.PropertyModel.find({ user: userId })
+    const userProperties = this.PropertyModel.find({ user: userId }).populate("address images user")
     return userProperties;
   }
 
